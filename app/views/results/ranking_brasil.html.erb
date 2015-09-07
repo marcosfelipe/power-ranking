@@ -1,0 +1,48 @@
+<p id="notice"><%= notice %></p>
+
+<div class="ui center aligned segment">
+  <h1><%= semantic_icon('line chart') %> Power Ranking Brasil</h1>
+  <div class="ui tertiary inverted segment">
+    Ranking de resultados relativos dos times da Série A do Campeonato Brasileiro de Futebol 2015
+  </div>
+</div>
+
+<%= form_tag power_ranking_path, method: :get do %>
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="field">
+          De:
+          <%= text_field_tag :start_date, (l(@start_date) unless @start_date.nil?) %>
+        </div>
+        <div class="field">
+          até:
+          <%= text_field_tag :end_date, (l(@end_date) unless @end_date.nil?) %>
+        </div>
+        <div class="field">
+          <button type="submit" class="button ui icon"><%= semantic_icon('arrow right') %></button>
+        </div>
+      </div>
+    </div>
+<% end %>
+
+<table class="ui table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Time</th>
+    <th>Pontos</th>
+    <th>Últimos Resultados</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @results.each_with_index do |result, i| %>
+      <tr>
+        <td><%= i+1 %></td>
+        <td><%= result.team.name %></td>
+        <td><%= result.total_points %></td>
+        <td><%= labeled_states result.team.period_results @start_date, @end_date %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
